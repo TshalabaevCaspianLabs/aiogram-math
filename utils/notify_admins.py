@@ -1,12 +1,11 @@
 import logging
 
 from aiogram import Dispatcher
-
-from data.config import ADMINS
+from utils.db_api import Base
 
 
 async def on_startup_notify(dp: Dispatcher):
-    for admin in ADMINS:
+        admin = Base().read_admin('admins')
         try:
             await dp.bot.send_message(admin, "Бот Запущен")
 
