@@ -207,3 +207,36 @@ class Base():
             for dt in data:
                 code.append(dt[1])
             return code
+
+
+
+
+    def create_table_notif(self, name):
+        con = self.con(name)
+        with con:
+            cur = con.cursor()
+            cur.execute("CREATE TABLE IF NOT EXISTS `main` (file_name TEXT)")
+            con.commit()
+
+    def add_file_name(self, name, filename):
+        self.create_table_notif(name)
+        con = self.con(name)
+        with con:
+            cur = con.cursor()
+            cur.execute(f"INSERT INTO `main` VALUES (?)", [(filename)])
+            con.commit()
+            cur.close()
+
+
+    def read_notif(self, name):
+        self.create_table_notif(name)
+        con = self.con(name)
+        with con:
+            cur = con.cursor()
+            cur.execute("SELECT * FROM `main`")
+            data = cur.fetchall()
+            file = []
+            for dt in data:
+                file.append(dt[0])
+            return file
+
